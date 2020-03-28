@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Maps Lat Long</title>
+  </head>
+  <body>
+    <!-- <div id="dvLoad">Loading Coordinates...</div> -->
+    COVID19.JSON<br/>
+    <textarea id="txtcovid19" rows="10" cols="150"></textarea><br>
+    Stats<br/>
+    <textarea id="txtstats" rows="10" cols="150"></textarea>
+    <script src="seeddata.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQgdL4BBsF-mWSndixT78PJ4BUmOgBRIM"></script> -->
+    <script>
+      
+    // seedData.forEach(function(x, index){
+    //   $.ajax({
+    //     "url":"https://maps.googleapis.com/maps/api/geocode/json?address="+x.city+"&key=AIzaSyDQgdL4BBsF-mWSndixT78PJ4BUmOgBRIM",
+    //     "method":"GET",
+    //     "async": false
+    //   }).done(function(res){
+    //     try{
+    //       var location = res.results[0].geometry.location;
+    //       arr.push({ "city": x.city, "lat": location.lat,"lng": location.lng, "count": parseFloat(x.count/100000) });
+    //     }catch(ex){
+    //       console.log(ex + ' ' + x.city);
+    //     }
+    //   });
+    // });
+
+    var arrStats = [];
+    var arrcovid = [];
+
+    countryData.forEach(function(c) {
+      arrStats.push({"place":c.city,"cases":c.count,"deaths":c.deaths});
+      
+      var o = seedData.filter(function(x){ return x.city == c.city; })[0];
+      if(o != undefined){
+        arrcovid.push(o.lat);
+        arrcovid.push(o.lng);
+        arrcovid.push(parseFloat(c.count/100000));
+      }
+    });
+    $('#txtstats').val(JSON.stringify(arrStats));
+
+    USData.forEach(function(c) {
+      var o = seedData.filter(function(x){ return x.city == c.city; })[0];
+      if(o != undefined){
+        arrcovid.push(o.lat);
+        arrcovid.push(o.lng);
+        arrcovid.push(parseFloat(c.count/100000));
+      }
+    });
+
+    indiaData.forEach(function(c) {
+      var o = seedData.filter(function(x){ return x.city == c.city; })[0];
+      if(o != undefined){
+        arrcovid.push(o.lat);
+        arrcovid.push(o.lng);
+        arrcovid.push(parseFloat(c.count/100000));
+      }
+    });
+
+    $('#txtcovid19').val(arrcovid.join(','));
+
+
+    //  var len = seedData.length;
+    //   var arr = [];
+    //   $.ajax({
+    //     "url":"https://api.covid19india.org/state_district_wise.json",
+    //     "method":"GET",
+    //     "async": false
+    //   }).done(function(res){
+    //     for(r in res){
+    //       for(x in res[r].districtData){
+    //         for(y in res[r].districtData[x]){
+    //           if(y == 'confirmed' && x != 'Unknown'){
+    //             arr.push({"city": r+ ' ' + (x == 'Unknown' ? '' : x),"count" : res[r].districtData[x][y]} );
+    //           }
+    //         }
+    //       }
+    //     };
+    //   });
+    //   $('#txtstats').val(JSON.stringify(arr));
+
+    </script>
+  </body>
+
+</html>
